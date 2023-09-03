@@ -1,0 +1,255 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TagServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sn.ept.git.seminaire.cicd.services.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: TagServiceImpl (sn.ept.git.seminaire.cicd.services.impl)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TagServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    11,1%
+  </span>
+  <span class="absValue">
+    (1/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8,5%
+  </span>
+  <span class="absValue">
+    (4/47)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TagServiceImpl$$EnhancerBySpringCGLIB$$4c9d9a74</td>
+  </tr>
+  <tr>
+    <td class="name">TagServiceImpl$$EnhancerBySpringCGLIB$$a1d4545d</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    11,1%
+  </span>
+  <span class="absValue">
+    (1/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8,5%
+  </span>
+  <span class="absValue">
+    (4/47)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sn.ept.git.seminaire.cicd.services.impl;
+&nbsp;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Propagation;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;import sn.ept.git.seminaire.cicd.dto.TagDTO;
+&nbsp;import sn.ept.git.seminaire.cicd.dto.vm.TagVM;
+&nbsp;import sn.ept.git.seminaire.cicd.exceptions.ItemExistsException;
+&nbsp;import sn.ept.git.seminaire.cicd.exceptions.ItemNotFoundException;
+&nbsp;import sn.ept.git.seminaire.cicd.mappers.TagMapper;
+&nbsp;import sn.ept.git.seminaire.cicd.mappers.vm.TagVMMapper;
+&nbsp;import sn.ept.git.seminaire.cicd.models.Tag;
+&nbsp;import sn.ept.git.seminaire.cicd.repositories.TagRepository;
+&nbsp;import sn.ept.git.seminaire.cicd.services.ITagService;
+&nbsp;import sn.ept.git.seminaire.cicd.utils.ExceptionUtils;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.UUID;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class TagServiceImpl implements ITagService {
+&nbsp;
+&nbsp;    private final TagRepository repository;
+&nbsp;    private final TagMapper mapper;
+&nbsp;    private final TagVMMapper vmMapper;
+&nbsp;
+<b class="fc">&nbsp;    public TagServiceImpl(TagRepository repository, TagMapper mapper, TagVMMapper vmMapper) {</b>
+<b class="fc">&nbsp;        this.repository = repository;</b>
+<b class="fc">&nbsp;        this.mapper = mapper;</b>
+<b class="fc">&nbsp;        this.vmMapper = vmMapper;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional(propagation = Propagation.REQUIRED)
+&nbsp;    @Override
+&nbsp;    public TagDTO save(TagVM vm) {
+&nbsp;
+<b class="nc">&nbsp;        final Optional&lt;Tag&gt; optional = repository.findByName(vm.getName());</b>
+<b class="nc">&nbsp;        ExceptionUtils.absentOrThrow(optional, ItemExistsException.NAME_EXISTS, vm.getName());</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        return</b>
+<b class="nc">&nbsp;                mapper.asDTO(</b>
+&nbsp;                        repository
+<b class="nc">&nbsp;                                .saveAndFlush(vmMapper.asEntity(vm)</b>
+&nbsp;                                )
+&nbsp;                );
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional(propagation = Propagation.REQUIRED)
+&nbsp;    @Override
+&nbsp;    public void delete(UUID uuid) {
+<b class="nc">&nbsp;        final Optional&lt;Tag&gt; optional = repository.findById(uuid);</b>
+<b class="nc">&nbsp;        if (optional.isPresent()) {</b>
+<b class="nc">&nbsp;            final Tag site = optional.get();</b>
+<b class="nc">&nbsp;            site.setDeleted(true);</b>
+<b class="nc">&nbsp;            repository.saveAndFlush(site);</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="nc">&nbsp;        throw new ItemNotFoundException(</b>
+<b class="nc">&nbsp;                ItemNotFoundException.format(ItemNotFoundException.TAG_BY_ID, uuid.toString())</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Optional&lt;TagDTO&gt; findById(UUID uuid) {
+<b class="nc">&nbsp;        return repository</b>
+<b class="nc">&nbsp;                .findById(uuid)</b>
+<b class="nc">&nbsp;                .map(mapper::asDTO);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;TagDTO&gt; findAll() {
+<b class="nc">&nbsp;        return repository</b>
+<b class="nc">&nbsp;                .findAll()</b>
+<b class="nc">&nbsp;                .stream()</b>
+<b class="nc">&nbsp;                .map(mapper::asDTO)</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Page&lt;TagDTO&gt; findAll(Pageable pageable) {
+<b class="nc">&nbsp;        return repository</b>
+<b class="nc">&nbsp;                .findAll(pageable)</b>
+<b class="nc">&nbsp;                .map(mapper::asDTO);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional(propagation = Propagation.REQUIRED)
+&nbsp;    @Override
+&nbsp;    public TagDTO update(UUID uuid, TagVM vm) {
+&nbsp;
+<b class="nc">&nbsp;        Optional&lt;Tag&gt; optional = repository.findByNameWithIdNotEquals(vm.getName(), uuid);</b>
+<b class="nc">&nbsp;        ExceptionUtils.absentOrThrow(optional, ItemExistsException.TITLE_EXISTS, vm.getName());</b>
+<b class="nc">&nbsp;        optional = repository.findById(uuid);</b>
+<b class="nc">&nbsp;        if (optional.isPresent()) {</b>
+<b class="nc">&nbsp;            final Tag item = optional.get();</b>
+<b class="nc">&nbsp;            item.setName(vm.getName());</b>
+<b class="nc">&nbsp;            item.setDescription(vm.getDescription());</b>
+<b class="nc">&nbsp;            return mapper.asDTO(repository.saveAndFlush(item));</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        throw new ItemNotFoundException(</b>
+<b class="nc">&nbsp;                ItemNotFoundException.format(ItemNotFoundException.TAG_BY_ID, uuid.toString())</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    @Override
+&nbsp;    public void deleteAll() {
+<b class="nc">&nbsp;        repository.deleteAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    @Override
+&nbsp;    public List&lt;TagDTO&gt; addALL(
+&nbsp;            List&lt;TagVM&gt; vms
+&nbsp;    ) {
+&nbsp;        //on décide volontairement d&#39;appliquer la loi du tout ou rien
+<b class="nc">&nbsp;        Optional&lt;String&gt; msg = vms</b>
+<b class="nc">&nbsp;                .stream()</b>
+<b class="nc">&nbsp;                .filter(item -&gt; repository.findByName(item.getName()).isPresent())</b>
+<b class="nc">&nbsp;                .map(TagVM::getName)</b>
+<b class="nc">&nbsp;                .reduce( (a, b) -&gt; a.concat(&quot;,\n&lt;br&gt; &quot;).concat(b));</b>
+&nbsp;
+<b class="nc">&nbsp;        ExceptionUtils.absentOrThrow(msg, ItemExistsException.NAME_EXISTS, &quot;Le(s) tag(s) suivant(s) existe(ent): &quot;+msg.orElse(&quot;&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;        return mapper.asDTOList(</b>
+<b class="nc">&nbsp;                repository.saveAll(</b>
+<b class="nc">&nbsp;                        vmMapper.asEntityList(vms)</b>
+&nbsp;                )
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-27 10:24</div>
+</div>
+</body>
+</html>

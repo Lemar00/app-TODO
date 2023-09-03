@@ -1,0 +1,164 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TodoVMMapperImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sn.ept.git.seminaire.cicd.mappers.vm</a>
+</div>
+
+<h1>Coverage Summary for Class: TodoVMMapperImpl (sn.ept.git.seminaire.cicd.mappers.vm)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TodoVMMapperImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (1/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    3,4%
+  </span>
+  <span class="absValue">
+    (1/29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sn.ept.git.seminaire.cicd.mappers.vm;
+&nbsp;
+&nbsp;import javax.annotation.processing.Generated;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;import sn.ept.git.seminaire.cicd.dto.vm.TodoVM;
+&nbsp;import sn.ept.git.seminaire.cicd.dto.vm.TodoVM.TodoVMBuilder;
+&nbsp;import sn.ept.git.seminaire.cicd.models.Todo;
+&nbsp;import sn.ept.git.seminaire.cicd.models.Todo.TodoBuilder;
+&nbsp;
+&nbsp;@Generated(
+&nbsp;    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+&nbsp;    date = &quot;2023-08-26T22:59:58+0000&quot;,
+&nbsp;    comments = &quot;version: 1.3.1.Final, compiler: javac, environment: Java 11.0.20 (Eclipse Adoptium)&quot;
+&nbsp;)
+&nbsp;@Component
+<b class="fc">&nbsp;public class TodoVMMapperImpl implements TodoVMMapper {</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Todo asEntity(TodoVM vm) {
+<b class="nc">&nbsp;        if ( vm == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        TodoBuilder&lt;?, ?&gt; todo = Todo.builder();</b>
+&nbsp;
+<b class="nc">&nbsp;        todo.tags( TodoVMMapper.asEntityQualifier( vm.getTags() ) );</b>
+<b class="nc">&nbsp;        todo.id( vm.getId() );</b>
+<b class="nc">&nbsp;        todo.createdDate( vm.getCreatedDate() );</b>
+<b class="nc">&nbsp;        todo.lastModifiedDate( vm.getLastModifiedDate() );</b>
+<b class="nc">&nbsp;        todo.version( vm.getVersion() );</b>
+<b class="nc">&nbsp;        todo.enabled( vm.isEnabled() );</b>
+<b class="nc">&nbsp;        todo.deleted( vm.isDeleted() );</b>
+<b class="nc">&nbsp;        todo.title( vm.getTitle() );</b>
+<b class="nc">&nbsp;        todo.description( vm.getDescription() );</b>
+<b class="nc">&nbsp;        todo.completed( vm.isCompleted() );</b>
+&nbsp;
+<b class="nc">&nbsp;        return todo.build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public TodoVM asDTO(Todo todo) {
+<b class="nc">&nbsp;        if ( todo == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        TodoVMBuilder&lt;?, ?&gt; todoVM = TodoVM.builder();</b>
+&nbsp;
+<b class="nc">&nbsp;        todoVM.tags( TodoVMMapper.asDTOQualifier( todo.getTags() ) );</b>
+<b class="nc">&nbsp;        todoVM.id( todo.getId() );</b>
+<b class="nc">&nbsp;        todoVM.createdDate( todo.getCreatedDate() );</b>
+<b class="nc">&nbsp;        todoVM.lastModifiedDate( todo.getLastModifiedDate() );</b>
+<b class="nc">&nbsp;        todoVM.version( todo.getVersion() );</b>
+<b class="nc">&nbsp;        todoVM.enabled( todo.isEnabled() );</b>
+<b class="nc">&nbsp;        todoVM.deleted( todo.isDeleted() );</b>
+<b class="nc">&nbsp;        todoVM.title( todo.getTitle() );</b>
+<b class="nc">&nbsp;        todoVM.description( todo.getDescription() );</b>
+<b class="nc">&nbsp;        todoVM.completed( todo.isCompleted() );</b>
+&nbsp;
+<b class="nc">&nbsp;        return todoVM.build();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-27 10:24</div>
+</div>
+</body>
+</html>

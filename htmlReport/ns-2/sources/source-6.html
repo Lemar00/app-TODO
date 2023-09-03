@@ -1,0 +1,161 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Validator</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sn.ept.git.seminaire.cicd.demo</a>
+</div>
+
+<h1>Coverage Summary for Class: Validator (sn.ept.git.seminaire.cicd.demo)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Validator</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sn.ept.git.seminaire.cicd.demo;
+&nbsp;
+&nbsp;import sn.ept.git.seminaire.cicd.demo.exception.BadPhoneException;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.regex.Matcher;
+&nbsp;import java.util.regex.Pattern;
+&nbsp;
+&nbsp;public final class Validator {
+&nbsp;
+&nbsp;    public static final String MOTIF=&quot;^(\\+221|00221)?(70|75|76|77|78)[0-9]{7}$&quot;;
+&nbsp;    public static final String ORANGE = &quot;ORANGE&quot;;
+&nbsp;    public static final String FREE = &quot;FREE&quot;;
+&nbsp;    public static final String EXPRESSO = &quot;EXPRESSO&quot;;
+&nbsp;    public static final String PROMOBILE = &quot;PROMOBILE&quot;;
+&nbsp;
+&nbsp;
+&nbsp;    private Validator(){
+&nbsp;        super();
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public static String getSnMobileOperator(String phone) throws BadPhoneException {
+&nbsp;        String result;
+<b class="nc">&nbsp;        Pattern r = Pattern.compile(MOTIF,Pattern.CASE_INSENSITIVE);</b>
+<b class="nc">&nbsp;        Matcher matcher = r.matcher(phone);</b>
+<b class="nc">&nbsp;        if (!matcher.matches()) {</b>
+<b class="nc">&nbsp;            throw new BadPhoneException(&quot;Bad phone &quot; + phone);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        String operator = matcher.group(2);</b>
+&nbsp;
+<b class="nc">&nbsp;        switch (operator) {</b>
+&nbsp;            case &quot;77&quot;:
+&nbsp;            case &quot;78&quot;:
+<b class="nc">&nbsp;                result = ORANGE;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            case &quot;76&quot;:
+<b class="nc">&nbsp;                result = FREE;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            case &quot;70&quot;:
+<b class="nc">&nbsp;                result = EXPRESSO;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            default:
+<b class="nc">&nbsp;                result = PROMOBILE;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    
+&nbsp;    public static Integer sumOfSquaresOfEvenNumbers(List&lt;Integer&gt; values) {
+<b class="nc">&nbsp;        return   values</b>
+<b class="nc">&nbsp;                .stream()</b>
+<b class="nc">&nbsp;                .filter(item-&gt;item%2==0)</b>
+<b class="nc">&nbsp;                .map(item-&gt;item*item)</b>
+<b class="nc">&nbsp;                .reduce(0,(a,b)-&gt;a+b);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-27 10:24</div>
+</div>
+</body>
+</html>

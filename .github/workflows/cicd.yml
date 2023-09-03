@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build and test
+      run: |
+        ./mvnw clean install
+        ./mvnw test
+
+    - name: Quality Gate
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+    - name: Check Quality Gate
+      id: sonarqube-quality-gate-check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      timeout-minutes: 5
+      env:
+       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+    - name: Package
+      run: ./mvnw package
+
+    - name: Release
+      run: # Run release command here
+
+    - name: Deploy to Dev
+      run: ./deploy-dev.sh # Exécutez le script de déploiement vers Dev
+      if: github.ref == 'refs/heads/main' # Only deploy on main branch
+
+    - name: Deploy to Prod
+      run: ./deploy-prod.sh # Exécutez le script de déploiement vers Prod
+      if: github.ref == 'refs/heads/release' # Only deploy on release branch
+
+    - name: Notify
+      run: |
+        # send notification with the mail commande
+        echo "Le déploiement est terminé." | mail -s "Notification de déploiement" marml@ept.sn
+
+    - name: Test dependencies vulnerabilities
+      run: # Run OWASP dependency vulnerability check command
+

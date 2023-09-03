@@ -1,0 +1,202 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TagResource</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sn.ept.git.seminaire.cicd.resources</a>
+</div>
+
+<h1>Coverage Summary for Class: TagResource (sn.ept.git.seminaire.cicd.resources)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TagResource</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    9,5%
+  </span>
+  <span class="absValue">
+    (2/21)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TagResource$$EnhancerBySpringCGLIB$$1d58091c</td>
+  </tr>
+  <tr>
+    <td class="name">TagResource$$EnhancerBySpringCGLIB$$897b779c</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    9,5%
+  </span>
+  <span class="absValue">
+    (2/21)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sn.ept.git.seminaire.cicd.resources;
+&nbsp;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.data.web.PageableDefault;
+&nbsp;import org.springframework.validation.annotation.Validated;
+&nbsp;import sn.ept.git.seminaire.cicd.dto.TagDTO;
+&nbsp;import sn.ept.git.seminaire.cicd.dto.base.BaseDTO;
+&nbsp;import sn.ept.git.seminaire.cicd.dto.vm.TagVM;
+&nbsp;import sn.ept.git.seminaire.cicd.services.ITagService;
+&nbsp;import sn.ept.git.seminaire.cicd.utils.ResponseUtil;
+&nbsp;import sn.ept.git.seminaire.cicd.utils.UrlMapping;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+&nbsp;
+&nbsp;import javax.validation.Valid;
+&nbsp;import java.net.URI;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.UUID;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Validated
+&nbsp;@RestController
+&nbsp;public class TagResource {
+&nbsp;
+&nbsp;    private final ITagService service;
+&nbsp;
+<b class="fc">&nbsp;    public TagResource(ITagService service) {</b>
+<b class="fc">&nbsp;        this.service = service;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(UrlMapping.Tag.ALL)
+&nbsp;    public ResponseEntity&lt;Page&lt;TagDTO&gt;&gt; findAll(
+&nbsp;            @PageableDefault Pageable page
+&nbsp;    ) {
+<b class="nc">&nbsp;        Page&lt;TagDTO&gt; result = service.findAll(page);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok().body(result);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(UrlMapping.Tag.FIND_BY_ID)
+&nbsp;    public ResponseEntity&lt;TagDTO&gt; findById(@PathVariable (&quot;id&quot;) UUID id) {
+<b class="nc">&nbsp;        return ResponseUtil.wrapOrNotFound(service.findById(id),HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(UrlMapping.Tag.ADD)
+&nbsp;    public ResponseEntity&lt;TagDTO&gt; create(@RequestBody @Valid TagVM vm) {
+&nbsp;
+<b class="nc">&nbsp;        TagDTO created = service.save(vm);</b>
+&nbsp;        URI location = ServletUriComponentsBuilder
+<b class="nc">&nbsp;                .fromCurrentRequest()</b>
+<b class="nc">&nbsp;                .path(&quot;/{id}&quot;)</b>
+<b class="nc">&nbsp;                .buildAndExpand(created.getId())</b>
+<b class="nc">&nbsp;                .toUri();</b>
+<b class="nc">&nbsp;        return ResponseEntity.created(location).body(created);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(UrlMapping.Tag.DELETE)
+&nbsp;    public ResponseEntity&lt;TagDTO&gt; delete(@PathVariable(&quot;id&quot;) UUID id) {
+<b class="nc">&nbsp;        service.delete(id);</b>
+<b class="nc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(UrlMapping.Tag.UPDATE)
+&nbsp;    public ResponseEntity&lt;TagDTO&gt; update(
+&nbsp;            @PathVariable(&quot;id&quot;) UUID id,
+&nbsp;            @RequestBody @Valid TagVM vm) {
+<b class="nc">&nbsp;        final TagDTO dto = service.update(id, vm);</b>
+<b class="nc">&nbsp;        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(dto),HttpStatus.ACCEPTED);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PostMapping(UrlMapping.Tag.ADD_ALL)
+&nbsp;    public ResponseEntity&lt;List&lt;TagDTO&gt;&gt; addALL(@RequestBody List&lt;  @Valid TagVM&gt; vms) {
+<b class="nc">&nbsp;        List&lt;TagDTO &gt;  created =  service.addALL(vms);</b>
+&nbsp;        URI location = ServletUriComponentsBuilder
+<b class="nc">&nbsp;                .fromCurrentRequest()</b>
+<b class="nc">&nbsp;                .path(&quot;/{ids}&quot;)</b>
+<b class="nc">&nbsp;                .buildAndExpand(created.stream().map(BaseDTO::getId).collect(Collectors.toList()))</b>
+<b class="nc">&nbsp;                .toUri();</b>
+<b class="nc">&nbsp;        return ResponseEntity.created(location).body(created);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-27 10:24</div>
+</div>
+</body>
+</html>

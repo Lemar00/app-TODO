@@ -1,0 +1,91 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GenericService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sn.ept.git.seminaire.cicd.services.generic</a>
+</div>
+
+<h1>Coverage Summary for Class: GenericService (sn.ept.git.seminaire.cicd.services.generic)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">GenericService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sn.ept.git.seminaire.cicd.services.generic;
+&nbsp;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;public interface GenericService&lt;D,V, I&gt; {
+&nbsp;
+&nbsp;    D save(V vm);
+&nbsp;
+&nbsp;    void delete(I id);
+&nbsp;
+&nbsp;    Optional&lt;D&gt; findById(I id);
+&nbsp;
+&nbsp;    List&lt;D&gt; findAll();
+&nbsp;
+&nbsp;    Page&lt;D&gt; findAll(Pageable pageable);
+&nbsp;
+&nbsp;    D update(I id, V vm);
+&nbsp;
+&nbsp;    void deleteAll();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-27 10:24</div>
+</div>
+</body>
+</html>

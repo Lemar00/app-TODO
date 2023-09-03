@@ -1,0 +1,179 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TodoResource</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sn.ept.git.seminaire.cicd.resources</a>
+</div>
+
+<h1>Coverage Summary for Class: TodoResource (sn.ept.git.seminaire.cicd.resources)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TodoResource</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10,5%
+  </span>
+  <span class="absValue">
+    (2/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sn.ept.git.seminaire.cicd.resources;
+&nbsp;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.data.web.PageableDefault;
+&nbsp;import sn.ept.git.seminaire.cicd.dto.TodoDTO;
+&nbsp;import sn.ept.git.seminaire.cicd.dto.vm.TodoVM;
+&nbsp;import sn.ept.git.seminaire.cicd.services.ITodoService;
+&nbsp;import sn.ept.git.seminaire.cicd.utils.ResponseUtil;
+&nbsp;import sn.ept.git.seminaire.cicd.utils.UrlMapping;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+&nbsp;
+&nbsp;import javax.validation.Valid;
+&nbsp;import java.net.URI;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@RestController
+&nbsp;public class TodoResource {
+&nbsp;
+&nbsp;    private final ITodoService service;
+&nbsp;
+<b class="fc">&nbsp;    public TodoResource(ITodoService service) {</b>
+<b class="fc">&nbsp;        this.service = service;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(UrlMapping.Todo.ALL)
+&nbsp;    public ResponseEntity&lt;Page&lt;TodoDTO&gt;&gt; findAll(
+&nbsp;            @PageableDefault Pageable page
+&nbsp;    ) {
+<b class="nc">&nbsp;        Page&lt;TodoDTO&gt; result = service.findAll(page);</b>
+<b class="nc">&nbsp;        return ResponseEntity.ok().body(result);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(UrlMapping.Todo.FIND_BY_ID)
+&nbsp;    public ResponseEntity&lt;TodoDTO&gt; findById(@PathVariable (&quot;id&quot;) UUID id) {
+<b class="nc">&nbsp;        return ResponseUtil.wrapOrNotFound(service.findById(id),HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(UrlMapping.Todo.ADD)
+&nbsp;    public ResponseEntity&lt;TodoDTO&gt; create(@Valid @RequestBody TodoVM vm) {
+<b class="nc">&nbsp;        TodoDTO created = service.save(vm);</b>
+&nbsp;        URI location = ServletUriComponentsBuilder
+<b class="nc">&nbsp;                .fromCurrentRequest()</b>
+<b class="nc">&nbsp;                .path(&quot;/{id}&quot;)</b>
+<b class="nc">&nbsp;                .buildAndExpand(created.getId())</b>
+<b class="nc">&nbsp;                .toUri();</b>
+<b class="nc">&nbsp;        return ResponseEntity.created(location).body(created);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(UrlMapping.Todo.DELETE)
+&nbsp;    public ResponseEntity&lt;TodoDTO&gt; delete(@PathVariable(&quot;id&quot;) UUID id) {
+<b class="nc">&nbsp;        service.delete(id);</b>
+<b class="nc">&nbsp;        return ResponseEntity.noContent().build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(UrlMapping.Todo.UPDATE)
+&nbsp;    public ResponseEntity&lt;TodoDTO&gt; update(
+&nbsp;            @PathVariable(&quot;id&quot;) UUID id,
+&nbsp;            @RequestBody @Valid TodoVM vm) {
+<b class="nc">&nbsp;        final TodoDTO dto = service.update(id, vm);</b>
+<b class="nc">&nbsp;        Optional&lt;TodoDTO&gt; optional = Optional.ofNullable(dto);</b>
+<b class="nc">&nbsp;        return ResponseUtil.wrapOrNotFound(optional,HttpStatus.ACCEPTED);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;        @DeleteMapping(UrlMapping.Todo.COMPLETE)
+&nbsp;        public ResponseEntity&lt;TodoDTO&gt; complete(@PathVariable(&quot;id&quot;) UUID id) {
+<b class="nc">&nbsp;            final TodoDTO dto = service.complete(id);</b>
+<b class="nc">&nbsp;            Optional&lt;TodoDTO&gt; optional = Optional.ofNullable(dto);</b>
+<b class="nc">&nbsp;            return ResponseUtil.wrapOrNotFound(optional,HttpStatus.ACCEPTED);</b>
+&nbsp;        }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-27 10:24</div>
+</div>
+</body>
+</html>

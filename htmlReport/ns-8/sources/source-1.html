@@ -1,0 +1,209 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > RestResponseEntityExceptionHandler</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sn.ept.git.seminaire.cicd.exceptions.handler</a>
+</div>
+
+<h1>Coverage Summary for Class: RestResponseEntityExceptionHandler (sn.ept.git.seminaire.cicd.exceptions.handler)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RestResponseEntityExceptionHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    3,2%
+  </span>
+  <span class="absValue">
+    (1/31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sn.ept.git.seminaire.cicd.exceptions.handler;
+&nbsp;
+&nbsp;import sn.ept.git.seminaire.cicd.exceptions.ForbiddenException;
+&nbsp;import sn.ept.git.seminaire.cicd.exceptions.InvalidException;
+&nbsp;import sn.ept.git.seminaire.cicd.exceptions.ItemExistsException;
+&nbsp;import sn.ept.git.seminaire.cicd.exceptions.ItemNotFoundException;
+&nbsp;import sn.ept.git.seminaire.cicd.exceptions.message.ErrorMessage;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.ExceptionHandler;
+&nbsp;import org.springframework.web.bind.annotation.ResponseStatus;
+&nbsp;import org.springframework.web.bind.annotation.RestControllerAdvice;
+&nbsp;import org.springframework.web.context.request.WebRequest;
+&nbsp;import org.springframework.web.server.ResponseStatusException;
+&nbsp;import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+&nbsp;
+&nbsp;import java.util.Date;
+&nbsp;
+&nbsp;/**
+&nbsp; *
+&nbsp; * @author ISENE
+&nbsp; */
+&nbsp;
+&nbsp;@RestControllerAdvice
+<b class="fc">&nbsp;public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {</b>
+&nbsp;
+&nbsp;    @ExceptionHandler(value= { ItemNotFoundException.class })
+&nbsp;    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+&nbsp;    protected ResponseEntity&lt;ErrorMessage&gt; notFound(
+&nbsp;            ItemNotFoundException ex, WebRequest request) {
+<b class="nc">&nbsp;        ErrorMessage message =  ErrorMessage.of(</b>
+<b class="nc">&nbsp;                HttpStatus.NOT_FOUND.value(),</b>
+&nbsp;                new Date(),
+<b class="nc">&nbsp;                ex.getMessage(),</b>
+<b class="nc">&nbsp;                request.getDescription(false)</b>
+&nbsp;        );
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(message, HttpStatus.NOT_FOUND);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ExceptionHandler(value= { ItemExistsException.class })
+&nbsp;    @ResponseStatus(value = HttpStatus.CONFLICT)
+&nbsp;    protected ResponseEntity&lt;ErrorMessage&gt; conflict(
+&nbsp;            ItemExistsException ex, WebRequest request) {
+<b class="nc">&nbsp;        ErrorMessage message =  ErrorMessage.of(</b>
+<b class="nc">&nbsp;                HttpStatus.CONFLICT.value(),</b>
+&nbsp;                new Date(),
+<b class="nc">&nbsp;                ex.getMessage(),</b>
+<b class="nc">&nbsp;                request.getDescription(false)</b>
+&nbsp;        );
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(message, HttpStatus.CONFLICT);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ExceptionHandler(value= { InvalidException.class })
+&nbsp;    @ResponseStatus(value = HttpStatus.CONFLICT)
+&nbsp;    protected ResponseEntity&lt;ErrorMessage&gt; badRequest(
+&nbsp;            InvalidException ex, WebRequest request) {
+<b class="nc">&nbsp;        ErrorMessage message =  ErrorMessage.of(</b>
+<b class="nc">&nbsp;                HttpStatus.BAD_REQUEST.value(),</b>
+&nbsp;                new Date(),
+<b class="nc">&nbsp;                ex.getMessage(),</b>
+<b class="nc">&nbsp;                request.getDescription(false)</b>
+&nbsp;        );
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(message, HttpStatus.BAD_REQUEST);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @ExceptionHandler(value= {ForbiddenException.class })
+&nbsp;    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+&nbsp;    protected ResponseEntity&lt;ErrorMessage&gt; permissionDenied(
+&nbsp;            ForbiddenException ex, WebRequest request) {
+<b class="nc">&nbsp;        ErrorMessage message =  ErrorMessage.of(</b>
+<b class="nc">&nbsp;                HttpStatus.FORBIDDEN.value(),</b>
+&nbsp;                new Date(),
+<b class="nc">&nbsp;                ex.getMessage(),</b>
+<b class="nc">&nbsp;                request.getDescription(false)</b>
+&nbsp;        );
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(message, HttpStatus.FORBIDDEN);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ExceptionHandler(value= { Exception.class ,RuntimeException.class})
+&nbsp;    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+&nbsp;    protected ResponseEntity&lt;ErrorMessage&gt; internalError(
+&nbsp;            Exception ex, WebRequest request) {
+<b class="nc">&nbsp;        ErrorMessage message =  ErrorMessage.of(</b>
+<b class="nc">&nbsp;                HttpStatus.INTERNAL_SERVER_ERROR.value(),</b>
+&nbsp;                new Date(),
+<b class="nc">&nbsp;                ex.getMessage(),</b>
+<b class="nc">&nbsp;                request.getDescription(false)</b>
+&nbsp;        );
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(message, HttpStatus.INTERNAL_SERVER_ERROR);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ExceptionHandler(value= {ResponseStatusException.class })
+&nbsp;    protected ResponseEntity&lt;ErrorMessage&gt; responseStatus(
+&nbsp;            ResponseStatusException ex, WebRequest request) {
+<b class="nc">&nbsp;        ErrorMessage message =  ErrorMessage.of(</b>
+<b class="nc">&nbsp;                ex.getStatus().value(),</b>
+&nbsp;                new Date(),
+<b class="nc">&nbsp;                ex.getMessage(),</b>
+<b class="nc">&nbsp;                request.getDescription(false)</b>
+&nbsp;        );
+<b class="nc">&nbsp;        return new ResponseEntity&lt;&gt;(message,   ex.getStatus());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-27 10:24</div>
+</div>
+</body>
+</html>
